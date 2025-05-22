@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import fs from "fs";
 
 // Fields to include in the report (dot notation for nested fields)
@@ -108,8 +109,23 @@ let allRows = inputData.flatMap((item) =>
   )
 );
 const rows = [FIELDS, ...allRows.map((row) => FIELDS.map((f) => row[f] ?? ""))];
+fs.writeFileSync("./output.json", JSON.stringify(rows, null, 2));
+
 const worksheet = XLSX.utils.aoa_to_sheet(rows);
 const workbook = XLSX.utils.book_new();
 XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
 XLSX.writeFile(workbook, "output.xlsx");
 console.log("Exported to output.xlsx");
+
+exportWithExcelJS(rows);
+
+function exportWithExcelJS(rows) {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Report");
+  worksheet.addRows(rows);
+  worksheet.getRow(1).font = { bold: true };
+
+  workbook.xlsx.writeFile("output2.xlsx").then(() => {
+    console.log("Exported to output2.xlsx");
+  });
+}

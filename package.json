@@ -4,13 +4,15 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node json-to-excel2.js",
+    "clean": "node -e \"const fs=require('fs'); fs.readdirSync('.').filter(f => f.startsWith('output')).forEach(f => { if (fs.statSync(f).isFile()) fs.unlinkSync(f); })\""
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "exceljs": "^4.4.0",
+    "moment": "^2.30.1",
     "prompt-demo": "file:",
     "xlsx": "^0.18.5"
   }

@@ -1,6 +1,7 @@
+import * as XLSX from "xlsx";
 import fs from "fs";
-import ExcelJS from "exceljs";
 
+// Fields to include in the report (dot notation for nested fields)
 const FIELDS = [
   "incidentId",
   "type",
@@ -97,8 +98,8 @@ function mergeRowsByParent(rows, fields, parentKey) {
   });
 }
 
-// Main: flatten, deduplicate, merge, and export to Excel with exceljs
-const inputData = JSON.parse(fs.readFileSync("input.json", "utf8"));
+// Main: flatten, deduplicate, merge, and export to Excel
+const inputData = JSON.parse(fs.readFileSync("input2.json", "utf8"));
 let allRows = inputData.flatMap((item) =>
   mergeRowsByParent(
     flattenAndDedup(item, FIELDS, "incidentId"),
@@ -106,16 +107,11 @@ let allRows = inputData.flatMap((item) =>
     "incidentId"
   )
 );
-
 const rows = [FIELDS, ...allRows.map((row) => FIELDS.map((f) => row[f] ?? ""))];
-fs.writeFileSync("./output2.json", JSON.stringify(rows, null, 2));
+fs.writeFileSync("./output.json", JSON.stringify(rows, null, 2));
 
-// Use exceljs to write the Excel file
-const workbook = new ExcelJS.Workbook();
-const worksheet = workbook.addWorksheet("Report");
-worksheet.addRows(rows);
-worksheet.getRow(1).font = { bold: true };
-
-workbook.xlsx.writeFile("output2.xlsx").then(() => {
-  console.log("Exported to output2.xlsx");
-});
+const worksheet = XLSX.utils.aoa_to_sheet(rows);
+const workbook = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
+XLSX.writeFile(workbook, "output.xlsx");
+console.log("Exported to output.xlsx");
