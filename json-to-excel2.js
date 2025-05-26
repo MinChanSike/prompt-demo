@@ -5,9 +5,9 @@ import Utils from "./Utils.js";
  * Contains all the settings for processing incident data
  */
 const CONFIG = {
-  inputFile: "input2.json",
-  outputJsonFile: "output2.json",
-  outputExcelFile: "output2.xlsx",
+  inputFile: "input3.json",
+  outputJsonFile: "output3.json",
+  outputExcelFile: "output3.xlsx",
   worksheetName: "Report",
   parentKey: "incidentId",
   noParentKey: "__NO_PARENT__",
@@ -44,6 +44,7 @@ const CONFIG = {
   contextRules: {
     "details.vehiclesInvolved": "plateNumber.serial",
     "responders.personnel": "name",
+    advisories: "message",
   },
 };
 
@@ -259,6 +260,47 @@ function mergeRowsByParent(rows, config) {
 }
 
 /**
+ * Adds blank rows between different incidents for better visual separation
+ * @param {Array} allRows - Array of processed row objects
+ * @param {Object} config - Configuration object
+ * @returns {Array} Array of row objects with blank separators
+ */
+function addBlankRowsBetweenIncidents(allRows, config) {
+  const { fields, parentKey } = config;
+
+  if (allRows.length === 0) return allRows;
+
+  const result = [];
+  let previousIncidentId = null;
+
+  for (let i = 0; i < allRows.length; i++) {
+    const currentIncidentId = allRows[i][parentKey];
+
+    // Add blank row before new incident (except for the first incident)
+    if (
+      previousIncidentId !== null &&
+      currentIncidentId !== previousIncidentId &&
+      currentIncidentId
+    ) {
+      // Create blank row with empty values for all fields
+      const blankRow = {};
+      fields.forEach((field) => {
+        blankRow[field] = "";
+      });
+      result.push(blankRow);
+    }
+
+    result.push(allRows[i]);
+
+    if (currentIncidentId) {
+      previousIncidentId = currentIncidentId;
+    }
+  }
+
+  return result;
+}
+
+/**
  * Main processing function that orchestrates the entire conversion process
  * Reads JSON input, processes it through flattening and merging, then outputs to both JSON and Excel
  *
@@ -275,6 +317,10 @@ function processData(config = CONFIG) {
     let allRows = inputData.flatMap((item) =>
       mergeRowsByParent(flattenAndDedup(item, config), config)
     );
+
+    // Add blank rows between incidents for better visual separation
+    console.log("Adding blank rows between incidents...");
+    allRows = addBlankRowsBetweenIncidents(allRows, config);
 
     // Convert to 2D array format with headers
     const rows = [

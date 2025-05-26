@@ -1,0 +1,131 @@
+[
+  {
+    "incidentId": "INC001",
+    "type": "Accident",
+    "location": {
+      "road": "PIE",
+      "direction": "towards Tuas",
+      "landmark": "before Eunos Exit"
+    },
+    "time": "2025-05-17T07:35:00+08:00",
+    "status": "Ongoing",
+    "details": {
+      "vehiclesInvolved": [
+        {
+          "type": "Car",
+          "plateNumber": { "serial": "SBC1234X", "region": "SG" },
+          "severity": "Moderate"
+        },
+        {
+          "type": "Motorcycle",
+          "plateNumber": { "serial": "SBC2334X", "region": "ML" },
+          "severity": "High"
+        },
+        {
+          "type": "Car",
+          "plateNumber": { "serial": "CBC8348A", "region": "SG" },
+          "severity": "Moderate"
+        },
+        {
+          "type": "Truck",
+          "plateNumber": { "serial": "ASC8493N", "region": "SG" },
+          "severity": "Moderate"
+        }
+      ],
+      "casualties": 1,
+      "lanesBlocked": "Lane 1, Lane 2"
+    },
+    "advisories": [
+      {
+        "type": "Diversion",
+        "message": "Use Exit 10A to Eunos Link"
+      },
+      {
+        "type": "Congestion Alert",
+        "message": "Expect delays of up to 25 minutes"
+      },
+      {
+        "type": "Diversion",
+        "message": "Don't use Exit 9 on PIE"
+      }
+    ],
+    "responders": [
+      {
+        "agency": "Traffic Police",
+        "arrivalTime": "2025-05-17T07:45:00+08:00",
+        "personnel": [
+          { "name": "Sgt. Tan Wei", "role": "Team Leader" },
+          { "name": "Cpl. Lim Hui", "role": "Traffic Control" }
+        ]
+      },
+      {
+        "agency": "SCDF",
+        "arrivalTime": "2025-05-17T07:50:00+08:00",
+        "personnel": [
+          { "name": "Lt. Ravi Kumar", "role": "Rescue Operations" },
+          { "name": "Spec. Ong Jia", "role": "Paramedic" }
+        ]
+      }
+    ]
+  },
+  {
+    "incidentId": "INC002",
+    "type": "Accident",
+    "location": {
+      "road": "AYE",
+      "direction": "towards Changi",
+      "landmark": "after Eunos Exit"
+    },
+    "time": "2025-05-17T07:35:00+08:00",
+    "status": "Ongoing",
+    "details": {
+      "vehiclesInvolved": [
+        {
+          "type": "Truck",
+          "plateNumber": { "serial": "SBC1234X", "region": "SG" },
+          "severity": "Moderate"
+        },
+        {
+          "type": "Motorcycle",
+          "plateNumber": { "serial": "SBC2334X", "region": "ML" },
+          "severity": "High"
+        },
+        {
+          "type": "Truck",
+          "plateNumber": { "serial": "AUP9938B", "region": "SG" },
+          "severity": "High"
+        }
+      ],
+      "casualties": 1,
+      "lanesBlocked": "Lane 1, Lane 2"
+    },
+    "advisories": [
+      {
+        "type": "Diversion",
+        "message": "Use Exit 10A to Eunos Link"
+      },
+      {
+        "type": "Congestion Alert",
+        "message": "Expect delays of up to 25 minutes"
+      }
+    ],
+    "responders": [
+      {
+        "agency": "Special Operations Command",
+        "arrivalTime": "2025-05-17T07:45:00+08:00",
+        "personnel": [
+          { "name": "Sgt. Tan Wei", "role": "Team Leader" },
+          { "name": "Cpl. Lim Hui", "role": "Team Leader" }
+        ]
+      },
+      {
+        "agency": "Other Agency",
+        "arrivalTime": "2025-05-17T07:50:00+08:00",
+        "personnel": [
+          { "name": "Lt. Ravi Kumar", "role": "Rescue Operations" },
+          { "name": "Spec. Ong Jia", "role": "Paramedic" }
+        ]
+      }
+    ]
+  }
+]
