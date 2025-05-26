@@ -29,7 +29,7 @@ function flattenAndDedup(obj, fields, parentKey) {
   let seen = {};
   function recurse(o, parent = {}, parentValue = null) {
     if (parentValue === null && o[parentKey]) {
-      seen = {};
+      seen = {}; // Reset seen for each new parent value
       parentValue = o[parentKey];
     }
     // Find first array in fields
@@ -62,9 +62,17 @@ function flattenAndDedup(obj, fields, parentKey) {
       let value = o;
       for (const part of parts) value = value && value[part];
       if (Array.isArray(value)) value = value.join(", ");
-      if (!seen[field]) seen[field] = new Set();
-      row[field] = value && seen[field].has(value) ? "" : value ?? "";
-      if (value && !seen[field].has(value)) seen[field].add(value);
+
+      // Only deduplicate non-role fields
+      const shouldDeduplicate = !field.endsWith("personnel.role");
+
+      if (shouldDeduplicate) {
+        if (!seen[field]) seen[field] = new Set();
+        row[field] = value && seen[field].has(value) ? "" : value ?? "";
+        if (value && !seen[field].has(value)) seen[field].add(value);
+      } else {
+        row[field] = value ?? "";
+      }
     }
     return [row];
   }
@@ -108,10 +116,10 @@ let allRows = inputData.flatMap((item) =>
   )
 );
 const rows = [FIELDS, ...allRows.map((row) => FIELDS.map((f) => row[f] ?? ""))];
-fs.writeFileSync("./output.json", JSON.stringify(rows, null, 2));
+fs.writeFileSync("./output2.json", JSON.stringify(rows, null, 2));
 
 const worksheet = XLSX.utils.aoa_to_sheet(rows);
 const workbook = XLSX.utils.book_new();
 XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
-XLSX.writeFile(workbook, "output.xlsx");
-console.log("Exported to output.xlsx");
+XLSX.writeFile(workbook, "output2.xlsx");
+console.log("Exported to output2.xlsx");

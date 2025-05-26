@@ -1,0 +1,18 @@
+To fix the issue where data is missing after deduplication 
+and merge when some child value in the nested are the same, 
+you need to ensure that deduplication is only applied to the specific field values 
+within each parent group, and that merging does not overwrite 
+or drop unique combinations of child data—even if some child values are the same.
+
+Problem in your code:
+Currently, in your flattenAndDedup function, deduplication is done inline 
+using a seen set per field. However, if two child objects under the same parent have 
+the same value for a field, only the first is kept and 
+the second is set to empty—even if the rest of the child data is different. 
+This causes loss of data when merging, as unique rows may be collapsed incorrectly.
+
+Solution:
+
+Deduplicate only identical rows, not just identical field values.
+When merging, only merge rows if their filled fields do not overlap (i.e., they are truly non-conflicting).
+Do not set a field to empty just because its value is repeated—set it to empty only if the entire row would be a duplicate.

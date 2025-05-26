@@ -59,8 +59,8 @@
     "type": "Accident",
     "location": {
       "road": "AYE",
-      "direction": "towards Tuas",
-      "landmark": "before Eunos Exit"
+      "direction": "towards Changi",
+      "landmark": "after Eunos Exit"
     },
     "time": "2025-05-17T07:35:00+08:00",
     "status": "Ongoing",
