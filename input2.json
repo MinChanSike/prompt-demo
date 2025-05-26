@@ -75,6 +75,11 @@
           "type": "Motorcycle",
           "plateNumber": { "serial": "SBC2334X", "region": "ML" },
           "severity": "High"
+        },
+        {
+          "type": "Truck",
+          "plateNumber": { "serial": "AUP9938B", "region": "SG" },
+          "severity": "High"
         }
       ],
       "casualties": 1,
