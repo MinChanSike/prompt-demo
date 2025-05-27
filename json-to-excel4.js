@@ -148,13 +148,9 @@ const CONFIG = {
   outputJsonFile: "output4.json",
   outputExcelFile: "output4.xlsx",
   worksheetName: "Report",
-  parentKey: "incidentId",
-  noParentKey: "__NO_PARENT__",
 
   // Define the fields to extract from the JSON data in the desired order
-
   fields: PRESET_FIELDS.flatMap((group) => group.fieldNames),
-
   /**
    * Context rules for intelligent deduplication
    * Each rule defines how to uniquely identify entities within an incident
@@ -166,7 +162,6 @@ const CONFIG = {
     "personsInfoList.hospitalInfo": "hospitalConveryedName",
     busServiceInfoList: "busServiceNumber",
     claimsVerificationInfoList: "busServiceNumber",
-    advisories: "message",
   },
 };
 
@@ -244,10 +239,10 @@ function generateContextKey(
  *
  * @param {Object} obj - The JSON object to flatten
  * @param {Object} config - Configuration object containing fields and rules
+ * @param {string} parentKey - Key to identify parent entity (default: "id")
  * @returns {Array} Array of flattened row objects
  */
-function flattenAndDedup(obj, config) {
-  const { fields, parentKey, contextRules } = config;
+function flattenAndDedup(obj, parentKey, fields, contextRules) {
   let seen = {}; // Tracks seen values per context to enable deduplication
 
   function recurse(o, parent = {}, parentValue = null, arrayContext = {}) {
@@ -301,10 +296,23 @@ function flattenAndDedup(obj, config) {
           return recurse(newObj, parent, parentValue, newArrayContext);
         });
       }
-    }
-
-    // No more arrays found - create a data row with deduplication applied
+    } // No more arrays found - create a data row with deduplication applied
     const row = { ...parent };
+
+    // Handle ID field with deduplication
+    if (parentValue) {
+      const idContextKey = `${parentValue}:Id`;
+      if (!seen[idContextKey]) {
+        seen[idContextKey] = new Set();
+      }
+
+      const shouldDedupId = seen[idContextKey].has(parentValue);
+      row["Id"] = shouldDedupId ? "" : parentValue;
+
+      if (!seen[idContextKey].has(parentValue)) {
+        seen[idContextKey].add(parentValue);
+      }
+    }
 
     for (const field of fields) {
       const parts = field.split(".");
@@ -318,9 +326,7 @@ function flattenAndDedup(obj, config) {
       // Convert arrays to comma-separated strings
       if (Array.isArray(value)) {
         value = value.join(", ");
-      }
-
-      // Generate context-aware key for intelligent deduplication
+      } // Generate context-aware key for intelligent deduplication
       const contextKey = generateContextKey(
         field,
         o,
@@ -332,9 +338,7 @@ function flattenAndDedup(obj, config) {
       // Initialize tracking for this context if not seen before
       if (!seen[contextKey]) {
         seen[contextKey] = new Set();
-      }
-
-      // Apply deduplication: show value if not seen in this context, otherwise empty string
+      } // Apply deduplication: show value if not seen in this context, otherwise empty string
       const shouldDedup = value && seen[contextKey].has(value);
       row[field] = shouldDedup ? "" : value ?? "";
 
@@ -357,11 +361,16 @@ function flattenAndDedup(obj, config) {
  *
  * @param {Array} rows - Array of row objects to potentially merge
  * @param {Object} config - Configuration object
+ * @param {string} parentKey - Key to identify parent entity (default: "id")
+ * @param {string} noParentKey - Key for items without parent (default: "__NO_PARENT__")
  * @returns {Array} Array of merged row objects
  */
-function mergeRowsByParent(rows, config) {
-  const { fields, parentKey, noParentKey } = config;
-
+function mergeRowsByParent(
+  rows,
+  fields,
+  parentKey = "id",
+  noParentKey = "__NO_PARENT__"
+) {
   // Group rows by their parent key (incident ID)
   const grouped = rows.reduce((acc, row) => {
     const key = row[parentKey] || noParentKey;
@@ -407,18 +416,17 @@ function mergeRowsByParent(rows, config) {
  * Adds blank rows between different incidents for better visual separation
  * @param {Array} allRows - Array of processed row objects
  * @param {Object} config - Configuration object
+ * @param {string} parentKey - Key to identify parent entity (default: "id")
  * @returns {Array} Array of row objects with blank separators
  */
-function addBlankRowsBetweenIncidents(allRows, config) {
-  const { fields, parentKey } = config;
-
+function addBlankRowsBetweenIncidents(allRows, fields, columnName = "Id") {
   if (allRows.length === 0) return allRows;
 
   const result = [];
   let previousIncidentId = null;
 
   for (let i = 0; i < allRows.length; i++) {
-    const currentIncidentId = allRows[i][parentKey];
+    const currentIncidentId = allRows[i][columnName];
 
     // Add blank row before new incident (except for the first incident)
     if (
@@ -472,22 +480,26 @@ function getGroupHeaderRow(presetFields) {
  * Reads JSON input, processes it through flattening and merging, then outputs to both JSON and Excel
  *
  * @param {Object} config - Configuration object (defaults to CONFIG)
+ * @param {string} parentKey - Key to identify parent entity (default: "id")
+ * @param {string} noParentKey - Key for items without parent (default: "__NO_PARENT__")
  * @returns {Array} The processed data as a 2D array
  */
-function processData(config = CONFIG) {
+function processData(config) {
   try {
-    console.log(`Reading input file: ${config.inputFile}`);
     const inputData = Utils.readJsonFile(config.inputFile);
 
-    console.log("Processing data...");
+    const parentKey = "id";
     // Process each incident through flattening and merging
     let allRows = inputData.flatMap((item) =>
-      mergeRowsByParent(flattenAndDedup(item, config), config)
+      mergeRowsByParent(
+        flattenAndDedup(item, parentKey, config.fields, config.contextRules),
+        config.fields,
+        parentKey
+      )
     );
 
     // Add blank rows between incidents for better visual separation
-    console.log("Adding blank rows between incidents...");
-    allRows = addBlankRowsBetweenIncidents(allRows, config);
+    allRows = addBlankRowsBetweenIncidents(allRows, config.fields);
     const EXPORT_FIELDS = ["Id", ...config.fields];
 
     // --- Add group header row ---
@@ -513,11 +525,9 @@ function processData(config = CONFIG) {
     // Output to both JSON and Excel formats
     console.log(`✅ Writing JSON output: ${config.outputJsonFile}`);
     Utils.writeJsonFile(config.outputJsonFile, rows);
-
     console.log(`⌛ Writing Excel output: ${config.outputExcelFile}`);
     Utils.writeExcelFile(config.outputExcelFile, rows, config.worksheetName);
 
-    console.log("Processing completed successfully!");
     return rows;
   } catch (error) {
     console.error("Error processing data:", error.message);
@@ -526,4 +536,4 @@ function processData(config = CONFIG) {
 }
 
 // Execute the main processing function
-processData();
+processData(CONFIG);

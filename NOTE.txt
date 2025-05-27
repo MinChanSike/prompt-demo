@@ -16,3 +16,28 @@ Solution:
 Deduplicate only identical rows, not just identical field values.
 When merging, only merge rows if their filled fields do not overlap (i.e., they are truly non-conflicting).
 Do not set a field to empty just because its value is repeated—set it to empty only if the entire row would be a duplicate.
+
+
+function generateContextKey(
+  field,
+  obj,
+  contextRules,
+  incidentId,
+  arrayContext = {}
+) {
+  let contextKey = `${incidentId}:${field}`;
+
+  // Special handling for person fields that should be deduplicated at incident level
+  const incidentLevelPersonFields = [
+    "personsInfoList.ageRange",
+    "personsInfoList.gender",
+    "personsInfoList.injuredPerson",
+  ];
+
+  if (incidentLevelPersonFields.includes(field)) {
+    // These fields are deduplicated at incident level, not person level
+    contextKey = `${incidentId}:${field}`;
+    return contextKey;
+  }
+
+}
