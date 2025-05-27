@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "start": "node json-to-excel2.js",
+    "start:ts": "tsx json-to-excel3.ts",
+    "build": "tsc",
+    "build:run": "tsc && node dist/json-to-excel3.js",
+    "dev": "tsx watch json-to-excel3.ts",
     "clean": "node -e \"const fs=require('fs'); fs.readdirSync('.').filter(f => f.startsWith('output')).forEach(f => { if (fs.statSync(f).isFile()) fs.unlinkSync(f); })\""
   },
   "author": "",
@@ -15,5 +19,10 @@
     "moment": "^2.30.1",
     "prompt-demo": "file:",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
   }
 }
