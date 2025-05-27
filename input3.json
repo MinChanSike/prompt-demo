@@ -123,7 +123,10 @@
         "arrivalTime": "2025-05-17T07:50:00+08:00",
         "personnel": [
           { "name": "Lt. Ravi Kumar", "role": "Rescue Operations" },
-          { "name": "Spec. Ong Jia", "role": "Paramedic" }
+          { "name": "Spec. Ong Jia", "role": "Paramedic" },
+          { "name": "Apect. Hui Min", "role": "Rescue Operations" },
+          { "name": "Vim. Kim Song", "role": "Team Leader" },
+          { "name": "John. Teller", "role": "Rescue Operations" }
         ]
       }
     ]

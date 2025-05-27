@@ -1,13 +1,76 @@
 import Utils from "./Utils.js";
 
 /**
+ * Formatter function instances
+ * These functions handle specific data transformations
+ */
+
+/**
+ * Formats timestamp values to readable date-time format
+ * @param {string} value - ISO timestamp string
+ * @returns {string} Formatted date-time string
+ */
+function timeFormatter(value) {
+  if (!value) return value;
+  try {
+    const date = new Date(value);
+    return date.toLocaleString("en-SG", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  } catch (error) {
+    return value; // Return original value if parsing fails
+  }
+}
+
+/**
+ * Formats plate number serial to uppercase
+ * @param {string} value - Plate number serial
+ * @returns {string} Uppercase plate number serial
+ */
+function plateNumberFormatter(value) {
+  return value ? value.toString().toUpperCase() : value;
+}
+
+/**
+ * Formats personnel names to proper case
+ * @param {string} value - Personnel name
+ * @returns {string} Properly formatted name
+ */
+function nameFormatter(value) {
+  if (!value) return value;
+  return value
+    .toString()
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+/**
+ * Formats casualties count with descriptive text
+ * @param {number} value - Number of casualties
+ * @returns {string} Formatted casualties description
+ */
+function casualtiesFormatter(value) {
+  if (value === 0 || value === null || value === undefined) {
+    return "No casualties";
+  }
+  return value.toString();
+}
+
+/**
  * Configuration object for JSON to Excel conversion
  * Contains all the settings for processing incident data
  */
 const CONFIG = {
-  inputFile: "input2.json",
-  outputJsonFile: "output2.json",
-  outputExcelFile: "output2.xlsx",
+  inputFile: "input3.json",
+  outputJsonFile: "output3.json",
+  outputExcelFile: "output3.xlsx",
   worksheetName: "Report",
   parentKey: "incidentId",
   noParentKey: "__NO_PARENT__",
@@ -46,6 +109,18 @@ const CONFIG = {
     "responders.personnel": "name",
     advisories: "message",
   },
+
+  /**
+   * Formatter configuration for field value transformation
+   * Each key is a field path, and the value is a reference to a formatter function
+   */
+  formatters: {
+    time: timeFormatter,
+    "responders.arrivalTime": timeFormatter,
+    "details.vehiclesInvolved.plateNumber.serial": plateNumberFormatter,
+    "responders.personnel.name": nameFormatter,
+    "details.casualties": casualtiesFormatter,
+  },
 };
 
 /**
@@ -61,6 +136,26 @@ function getValueByPath(obj, fieldPath) {
     value = value && value[part];
   }
   return value;
+}
+
+/**
+ * Applies formatting to a field value based on configured formatters
+ * @param {string} field - The field path
+ * @param {*} value - The value to format
+ * @param {Object} formatters - The formatters configuration object
+ * @returns {*} The formatted value or original value if no formatter is defined
+ */
+function applyFormatter(field, value, formatters) {
+  if (!formatters || !formatters[field]) {
+    return value;
+  }
+
+  try {
+    return formatters[field](value);
+  } catch (error) {
+    console.warn(`Formatter error for field '${field}':`, error.message);
+    return value; // Return original value if formatter fails
+  }
 }
 
 /**
@@ -111,7 +206,7 @@ function generateContextKey(field, obj, contextRules, incidentId) {
  * @returns {Array} Array of flattened row objects
  */
 function flattenAndDedup(obj, config) {
-  const { fields, parentKey, contextRules } = config;
+  const { fields, parentKey, contextRules, formatters } = config;
   let seen = {}; // Tracks seen values per context to enable deduplication
 
   function recurse(o, parent = {}, parentValue = null) {
@@ -176,6 +271,9 @@ function flattenAndDedup(obj, config) {
       if (Array.isArray(value)) {
         value = value.join(", ");
       }
+
+      // Apply formatter to the value before deduplication check
+      value = applyFormatter(field, value, formatters);
 
       // Generate context-aware key for intelligent deduplication
       const contextKey = generateContextKey(
