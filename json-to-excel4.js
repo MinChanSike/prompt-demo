@@ -301,13 +301,13 @@ function flattenAndDedup(obj, parentKey, fields, contextRules) {
 
     // Handle ID field with deduplication
     if (parentValue) {
-      const idContextKey = `${parentValue}:Id`;
+      const idContextKey = `${parentValue}:${parentKey}`;
       if (!seen[idContextKey]) {
         seen[idContextKey] = new Set();
       }
 
       const shouldDedupId = seen[idContextKey].has(parentValue);
-      row["Id"] = shouldDedupId ? "" : parentValue;
+      row[parentKey] = shouldDedupId ? "" : parentValue;
 
       if (!seen[idContextKey].has(parentValue)) {
         seen[idContextKey].add(parentValue);
@@ -419,14 +419,14 @@ function mergeRowsByParent(
  * @param {string} parentKey - Key to identify parent entity (default: "id")
  * @returns {Array} Array of row objects with blank separators
  */
-function addBlankRowsBetweenIncidents(allRows, fields, columnName = "Id") {
+function addBlankRowsBetweenIncidents(allRows, fields, parentKey) {
   if (allRows.length === 0) return allRows;
 
   const result = [];
   let previousIncidentId = null;
 
   for (let i = 0; i < allRows.length; i++) {
-    const currentIncidentId = allRows[i][columnName];
+    const currentIncidentId = allRows[i][parentKey];
 
     // Add blank row before new incident (except for the first incident)
     if (
@@ -498,9 +498,9 @@ function processData(config) {
       )
     );
 
+    const EXPORT_FIELDS = [parentKey, ...config.fields];
     // Add blank rows between incidents for better visual separation
-    allRows = addBlankRowsBetweenIncidents(allRows, config.fields);
-    const EXPORT_FIELDS = ["Id", ...config.fields];
+    allRows = addBlankRowsBetweenIncidents(allRows, EXPORT_FIELDS, parentKey);
 
     // --- Add group header row ---
     const groupHeaderRow = ["Id", ...getGroupHeaderRow(PRESET_FIELDS)];
@@ -518,7 +518,6 @@ function processData(config) {
     const rows = [
       groupHeaderRow,
       labelHeaderRow,
-      //config.fields, // Header row
       ...allRows.map((row) => EXPORT_FIELDS.map((f) => row[f] ?? "")), // Data rows
     ];
 
