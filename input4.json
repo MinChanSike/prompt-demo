@@ -1,0 +1,302 @@
+[
+  {
+    "id": "B-25-000004",
+    "domain": "Bus",
+    "ltaIncidentLevel": "Level2",
+    "isEscalatedToMOT": "Yes",
+    "incidentTypeName": "Passenger",
+    "otherIncidentType": null,
+    "incidentSubTypeName": "Interior Cleaning Required",
+    "otherIncidentSubTypeName": "",
+    "startTime": "2025-05-20T16:18:40",
+    "endTime": null,
+    "status": "OPEN",
+    "reportStatus": "Draft",
+    "incidentDescription": "Brief",
+    "locationTypeName": "Depot",
+    "locationSubTypeName": "Refueling Area",
+    "otherLocationSubTypeName": null,
+    "locationDescription": "location desp",
+    "startLocation": "Bugis Cube (BS 01039)",
+    "startLocationLongitude": 103.85557,
+    "startLocationLatitude": 1.29832,
+    "endLocation": "Queen St Ter (BS 01109)",
+    "endLocationLongitude": 103.856445,
+    "endLocationLatitude": 1.303678,
+    "additionalInformation": "additonal",
+    "numberOfFatalities": 1,
+    "numberOfInjured": 1,
+    "reportingTimeDifference": 0,
+    "hospitalInfoList": [],
+    "mediaAtScene": "Yes",
+    "ltaRemarks": "",
+    "cmtActivated": "NA",
+    "cmtActivatedTime": null,
+    "eocActivated": "NA",
+    "eocActivatedTime": null,
+    "agencyInfoList": [
+      {
+        "activatedTime": "2025-05-20T16:25:33",
+        "agencyTypeName": "SCDF",
+        "otherAgencyType": ""
+      },
+      {
+        "activatedTime": "2025-05-20T16:25:36",
+        "agencyTypeName": "Others",
+        "otherAgencyType": "Other Agency"
+      }
+    ],
+    "createdOrg": "LTA",
+    "createdSubOrg": "C3Sys",
+    "createdBy": "htetlinlin",
+    "createdTime": "2025-05-20T16:28:28.1935728",
+    "lastModifiedBy": "htetlinlin",
+    "lastModifiedTime": "2025-05-20T17:30:24.0502822",
+    "reportable": false,
+    "natureofIncident": "Passenger defecated onboard",
+    "otherNatureofIncident": "",
+    "busNumberInfoList": [
+      {
+        "busServiceNumber": "12345",
+        "busContractNumber": "12345"
+      }
+    ],
+    "numberOfBuses": 1,
+    "greenWaveActivated": "NA",
+    "isAmendment": true,
+    "personsInfoList": [
+      {
+        "involvedPersonName": "Lorry Driver",
+        "raceName": "Indian",
+        "age": "7 months",
+        "ageRange": "0 - 9",
+        "gender": "Female",
+        "injuredPerson": "Yes",
+        "hospitalInfo": {
+          "hospitalConveryedName": "KK Women's & Children's Hospital",
+          "extentOfInjury": "extent of injury",
+          "stateOfConveryedPerson": "Unconscious"
+        }
+      },
+      {
+        "involvedPersonName": "Lorry Driver",
+        "raceName": "Caucasian",
+        "age": "3 months",
+        "ageRange": "0 - 9",
+        "gender": "Female",
+        "injuredPerson": "Yes",
+        "hospitalInfo": {
+          "hospitalConveryedName": "Mount Alvernia Hospital",
+          "extentOfInjury": "exntent of injury 2",
+          "stateOfConveryedPerson": "Unconscious"
+        }
+      }
+    ],
+    "busServiceInfoList": [
+      {
+        "enroute": "Enroute(off-service)",
+        "beforeAfterTrip": "Prior to revenue service",
+        "busReplacementReason": "Bus continued revenue service",
+        "reasonForNonInsurancOfComplimentaryTicket": "BC did not know how to print the complimentary tickets",
+        "damage": "No",
+        "busImpounded": "Yes",
+        "nationality": "PRC",
+        "busServiceNumber": "12345",
+        "busRegisterationNumber": "12345",
+        "numberOfPassengerOnBoard": 1,
+        "numberOfPassengerTransferred": 1,
+        "numberOfComplimentaryTicketIssued": 0,
+        "damageDescription": "bus ",
+        "svcResumptionLocation": "service",
+        "svcResumptionTime": "2025-05-20T16:26:15",
+        "replacemetBusRegistrationNumber": "REPLACT",
+        "captainName": "captian ",
+        "age": 1,
+        "employeeId": "2234",
+        "lengthOfServiceYear": "1",
+        "lengthOfServiceMonth": "1"
+      }
+    ],
+    "routeAmendmentList": [
+      {
+        "originalRoute": "1",
+        "routeTakenList": [
+          {
+            "routeTaken": "1",
+            "ltaApprovedRoute": "NA",
+            "busServiceInfoList": [
+              {
+                "busServiceNumber": "1",
+                "busRegisterationNumber": "1",
+                "numberOfSkippedBusStop": 2,
+                "startSkippedBusStop": "St. Joseph's Ch (BS 01013)",
+                "endSkippedBusStop": "Queen St Ter (BS 01109)"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "claimsVerificationInfoList": [
+      {
+        "busServiceNumber": "C1",
+        "busRegisterationInfoList": [
+          {
+            "busRegisterationNumber": "C1",
+            "numberOfAffectedTrip": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "B-25-000005",
+    "domain": "Bus",
+    "ltaIncidentLevel": "Level2",
+    "isEscalatedToMOT": "Yes",
+    "incidentTypeName": "Passenger",
+    "otherIncidentType": null,
+    "incidentSubTypeName": "Interior Cleaning Required",
+    "otherIncidentSubTypeName": "",
+    "startTime": "2025-05-20T16:18:40",
+    "endTime": null,
+    "status": "OPEN",
+    "reportStatus": "Draft",
+    "incidentDescription": "Brief",
+    "locationTypeName": "Depot",
+    "locationSubTypeName": "Refueling Area",
+    "otherLocationSubTypeName": null,
+    "locationDescription": "location desp",
+    "startLocation": "Bugis Cube (BS 01039)",
+    "startLocationLongitude": 103.85557,
+    "startLocationLatitude": 1.29832,
+    "endLocation": "Queen St Ter (BS 01109)",
+    "endLocationLongitude": 103.856445,
+    "endLocationLatitude": 1.303678,
+    "additionalInformation": "additonal",
+    "numberOfFatalities": 1,
+    "numberOfInjured": 1,
+    "reportingTimeDifference": 0,
+    "hospitalInfoList": [],
+    "mediaAtScene": "Yes",
+    "ltaRemarks": "",
+    "cmtActivated": "NA",
+    "cmtActivatedTime": null,
+    "eocActivated": "NA",
+    "eocActivatedTime": null,
+    "agencyInfoList": [
+      {
+        "activatedTime": "2025-05-20T16:25:33",
+        "agencyTypeName": "SCDF",
+        "otherAgencyType": ""
+      },
+      {
+        "activatedTime": "2025-05-20T16:25:36",
+        "agencyTypeName": "Others",
+        "otherAgencyType": "Other Agency"
+      }
+    ],
+    "createdOrg": "LTA",
+    "createdSubOrg": "C3Sys",
+    "createdBy": "htetlinlin",
+    "createdTime": "2025-05-20T16:28:28.1935728",
+    "lastModifiedBy": "htetlinlin",
+    "lastModifiedTime": "2025-05-20T17:30:24.0502822",
+    "reportable": false,
+    "natureofIncident": "Passenger defecated onboard",
+    "otherNatureofIncident": "",
+    "busNumberInfoList": [
+      {
+        "busServiceNumber": "12345",
+        "busContractNumber": "12345"
+      }
+    ],
+    "numberOfBuses": 1,
+    "greenWaveActivated": "NA",
+    "isAmendment": true,
+    "personsInfoList": [
+      {
+        "involvedPersonName": "Lorry Driver",
+        "raceName": "Indian",
+        "age": "7 months",
+        "ageRange": "0 - 9",
+        "gender": "Female",
+        "injuredPerson": "Yes",
+        "hospitalInfo": {
+          "hospitalConveryedName": "KK Women's & Children's Hospital",
+          "extentOfInjury": "extent of injury",
+          "stateOfConveryedPerson": "Unconscious"
+        }
+      },
+      {
+        "involvedPersonName": "Lorry Driver",
+        "raceName": "Caucasian",
+        "age": "3 months",
+        "ageRange": "0 - 9",
+        "gender": "Female",
+        "injuredPerson": "Yes",
+        "hospitalInfo": {
+          "hospitalConveryedName": "Mount Alvernia Hospital",
+          "extentOfInjury": "exntent of injury 2",
+          "stateOfConveryedPerson": "Unconscious"
+        }
+      }
+    ],
+    "busServiceInfoList": [
+      {
+        "enroute": "Enroute(off-service)",
+        "beforeAfterTrip": "Prior to revenue service",
+        "busReplacementReason": "Bus continued revenue service",
+        "reasonForNonInsurancOfComplimentaryTicket": "BC did not know how to print the complimentary tickets",
+        "damage": "No",
+        "busImpounded": "Yes",
+        "nationality": "PRC",
+        "busServiceNumber": "12345",
+        "busRegisterationNumber": "12345",
+        "numberOfPassengerOnBoard": 1,
+        "numberOfPassengerTransferred": 1,
+        "numberOfComplimentaryTicketIssued": 0,
+        "damageDescription": "bus ",
+        "svcResumptionLocation": "service",
+        "svcResumptionTime": "2025-05-20T16:26:15",
+        "replacemetBusRegistrationNumber": "REPLACT",
+        "captainName": "captian ",
+        "age": 1,
+        "employeeId": "2234",
+        "lengthOfServiceYear": "1",
+        "lengthOfServiceMonth": "1"
+      }
+    ],
+    "routeAmendmentList": [
+      {
+        "originalRoute": "1",
+        "routeTakenList": [
+          {
+            "routeTaken": "1",
+            "ltaApprovedRoute": "NA",
+            "busServiceInfoList": [
+              {
+                "busServiceNumber": "1",
+                "busRegisterationNumber": "1",
+                "numberOfSkippedBusStop": 2,
+                "startSkippedBusStop": "St. Joseph's Ch (BS 01013)",
+                "endSkippedBusStop": "Queen St Ter (BS 01109)"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "claimsVerificationInfoList": [
+      {
+        "busServiceNumber": "C1",
+        "busRegisterationInfoList": [
+          {
+            "busRegisterationNumber": "C1",
+            "numberOfAffectedTrip": 1
+          }
+        ]
+      }
+    ]
+  }
+]
